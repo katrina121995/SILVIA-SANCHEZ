@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Recetario semanal · Silvia</title>
+<style>
+:root{--bg:#fbf7f0;--card:#fff;--ink:#2b2a26;--mut:#7a766c;--line:#ece4d6;--acc:#2f7d5b;--accbg:#e3f2ea;--chip:#f6f1e7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171a17;--card:#222622;--ink:#f1efe8;--mut:#a5a89f;--line:#333833;--acc:#6fcf9d;--accbg:#233a2e;--chip:#2b302b}}
+:root[data-theme="dark"]{--bg:#171a17;--card:#222622;--ink:#f1efe8;--mut:#a5a89f;--line:#333833;--acc:#6fcf9d;--accbg:#233a2e;--chip:#2b302b}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 "Segoe UI",system-ui,-apple-system,Roboto,sans-serif}
+.w{max-width:680px;margin:0 auto;padding:0 14px 30px}
+header{margin:14px 0;padding:22px 20px;border-radius:22px;background:linear-gradient(135deg,#2f7d5b,#7cb86b 60%,#e8b64c);color:#fff;position:relative;overflow:hidden}
+header h1{margin:0;font-size:26px;letter-spacing:-.3px}
+header p{margin:4px 0 0;opacity:.95;font-size:14px}
+header .big{position:absolute;right:12px;top:6px;font-size:64px;opacity:.9}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:8px 0;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+nav button{flex:0 0 auto;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:9px 15px;border-radius:99px;font:600 14px inherit;font-family:inherit;cursor:pointer}
+nav button.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+nav button small{display:block;font-weight:400;font-size:10px;opacity:.8}
+.prog{margin:8px 0 14px;display:flex;align-items:center;gap:10px;font-size:13px;color:var(--mut)}
+.bar{flex:1;height:8px;background:var(--line);border-radius:9px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--acc);transition:width .3s}
+.meal{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--c);border-radius:18px;padding:14px 14px 12px;margin-bottom:12px}
+.meal.ok{opacity:.6}
+.top{display:flex;align-items:center;gap:10px}
+.ic{width:42px;height:42px;border-radius:13px;background:color-mix(in srgb,var(--c) 18%,transparent);display:grid;place-items:center;font-size:23px;flex:none}
+.top div{flex:1;min-width:0}
+.top span{font:700 11px/1 inherit;font-family:inherit;text-transform:uppercase;letter-spacing:.8px;color:var(--c)}
+.top h2{margin:3px 0 0;font-size:16.5px;line-height:1.25}
+.chk{width:34px;height:34px;border-radius:50%;border:2px solid var(--line);background:none;color:#fff;font-size:17px;cursor:pointer;flex:none}
+.ok .chk{background:var(--acc);border-color:var(--acc)}
+ul{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:6px}
+li{display:flex;align-items:center;gap:9px;background:var(--chip);border-radius:11px;padding:7px 10px;font-size:14px}
+li .e{font-size:19px;flex:none}
+li .n{flex:1}
+li b{font-weight:600;color:var(--mut);font-size:12.5px;text-align:right;max-width:46%}
+.note{margin:9px 2px 0;font-size:12.5px;color:var(--mut)}
+.tip{background:var(--accbg);border-radius:18px;padding:14px 16px;margin-top:18px;font-size:14px}
+.tip b{color:var(--acc)}
+.ver{margin-top:11px;width:100%;border:1.5px solid var(--acc);background:var(--accbg);color:var(--acc);border-radius:12px;padding:9px;font:600 14px inherit;font-family:inherit;cursor:pointer}
+.pr{margin-top:12px;border-top:1px dashed var(--line);padding-top:12px}
+.pr h3{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.7px;color:var(--c)}
+.pr ol{list-style:none;counter-reset:s;margin:0;padding:0;display:grid;gap:9px}
+.pr li{counter-increment:s;background:none;padding:0;align-items:flex-start;font-size:14.5px;gap:10px}
+.pr li:before{content:counter(s);flex:none;width:24px;height:24px;border-radius:50%;background:var(--c);color:#fff;font:700 13px/24px inherit;font-family:inherit;text-align:center}
+.pl{text-align:center;margin-top:14px}
+.pl svg{width:170px;height:170px}
+.pl p{margin:4px 0 0;font-size:12px;color:var(--mut)}
+footer{text-align:center;color:var(--mut);font-size:13px;margin-top:20px}
+</style></head><body><div class="w">
+<header><div class="big">🥗</div><h1>Mi recetario semanal</h1><p>Menús y preparaciones de Silvia · toca “Ver preparación” en cada comida</p></header>
+<nav id="t"></nav>
+<div class="prog"><span id="pt"></span><div class="bar"><i id="pb"></i></div></div>
+<main id="m"></main>
+<div class="tip">💧 <b>Hidratación:</b> 1,5 a 2 litros de agua al día. Toma 1 vaso al despertar y otro unos 30 minutos antes de cada comida principal. Sin gaseosas ni bebidas azucaradas.<br><br>🔁 Puedes cambiar alimentos por otros de tu <b>lista de intercambio</b>, respetando las porciones.</div>
+<footer>Con cariño, Katherine Guarín · Nutricionista Dietista<br>📱 310 7477625</footer>
+</div>
+<script>
+const S=[["Antemañana","🌅","#d99a1f"],["Desayuno","🍳","#e2733f"],["Media mañana","🍎","#c9505f"],["Almuerzo","🍽️","#2f9a6b"],["Media tarde","🥣","#8a63c2"],["Cena","🌙","#3f6fb5"]];
+const I={
+agua:["💧","Agua","250 ml (1 vaso)"],chia5:["🌱","Semillas de chía","5 g (½ cda)"],chia:["🌱","Semillas de chía","10 g (1 cda)"],limon:["🍋","Limón","½ unidad"],
+pan:["🍞","Pan integral","32 g (1 tajada mediana)"],h2:["🥚","Huevos","2 unidades (100 g)"],h1:["🥚","Huevo","1 unidad (50 g)"],
+agu:["🥑","Aguacate","30 g (¼ unidad)"],ac:["🫒","Aceite para preparar","5 g (1 cda)"],ao:["🫒","Aceite de oliva","5 g (1 cda)"],
+yd:["🥛","Yogurt descremado","200 g (1 vaso pequeño)"],yg:["🥛","Yogurt griego descremado","100 g (1 vaso pequeño)"],
+av:["🌾","Avena en hojuelas","24 g (4 cdas)"],mi:["🍯","Miel de abejas","21 g (1 cda)"],fr:["🍓","Fresas","161 g (9 medianas)"],
+le:["🥛","Leche descremada","200 g (1 vaso pequeño)"],fe:["🍊","Fruta de estación","1 porción equivalente"],
+g3:["🍘","Galletas integrales / saltinas","24 g (3 unidades)"],c2:["🧀","Cuajada","40–60 g (2 tajadas)"],c1:["🧀","Cuajada","20–30 g (1 tajada)"],
+po:["🍗","Pechuga de pollo","80 g (¼ unidad grande)"],ar:["🍚","Arroz integral cocido","81 g (8 cdas)"],zn:["🥕","Zanahoria","58 g (½ pocillo)"],
+pe:["🥒","Pepino","58 g (½ pocillo)"],zp:["🥕","Zanahoria / pepino","al gusto"],pl:["🍌","Plátano maduro","66 g (¼ unidad)"],du:["🍑","Durazno","118 g (1 mediano)"],
+ba:["🍌","Banano","65 g (1 pequeño)"],pa:["🍈","Papaya","128 g (1 trozo mediano)"],fj:["🫘","Fríjoles","100–130 g (1 cucharón colmado)"],
+le2:["🫘","Lentejas con guiso","130 g (1 cucharón colmado)"],ma:["🍵","Té matcha","2 g (1 cdita)"],lm:["🥛","Leche descremada","100 ml (½ vaso)"],
+va:["🌼","Esencia de vainilla","al gusto"],ar2:["🫖","Infusión de hierbas o frutos","200 ml (1 taza)"],ens:["🥬","Lechuga, tomate y cebolla","al gusto"]};
+const AC=["Agua con chía y limón",["agua","chia5","limon"]],MA=["Matcha latte con vainilla",["ma","lm","va"]],AR=["Aromática",["ar2"]];
+const NP="Puedes cambiar el pescado por otro de la lista de intercambio.";
+const D=[
+["Lunes",[AC,["Tostada con huevos y aguacate",["pan","h2","agu","ac"]],["Parfait de yogurt, avena y manzana",["yd","av",["🍎","Manzana","112 g (1 pequeña)"],"chia","mi"]],
+["Salmón asado con ensalada y sopa",[["🐟","Salmón asado","146–160 g (2 trozos pequeños)"],["🥕","Zanahoria rallada","58 g (½ pocillo)"],["🟣","Remolacha cocida","57 g (½ pequeña)"],"ao",["🥔","Papa criolla","214 g (6 medianas)"],["🍲","Sopa de verduras","250 ml (1 plato sopero)"]],NP],
+["Yogurt griego con fresas",["yg","fr","mi"]],["Cuajada con galletas",["c2",["🍘","Galletas","3 unidades"]]]]],
+["Martes",[MA,["Huevos con galletas",["g3","h2","ac"]],["Leche con fruta",["le","fe"]],
+["Pollo con fríjoles y arroz integral",["po","fj","ar","zn","pe","ao","pl"]],["Yogurt con fruta",["yd","fe"]],["Pan con cuajada",["pan","c2"]]]],
+["Miércoles",[AR,["Cuajada, galletas y huevo",[["🧀","Cuajada","30 g (1 tajada pequeña)"],"g3","h1"]],["Parfait de yogurt, avena y fresas",["yd","av","fr","chia","mi"]],
+["Carne magra con lentejas y arroz",[["🥩","Carne de res magra","100 g (⅕ de libra)"],["🫘","Lentejas","130 g (1 cucharón colmado)"],"ar","ens","ao","yg"]],
+["Papaya con nueces",["pa",["🥜","Mezcla de nueces","11 g (1 cda colmada)"]]],["Pan con huevo",["pan","h1"]]]],
+["Jueves",[AC,["Tostada con huevos y aguacate",["pan",["🥑","Aguacate","30 g (⅛ a ¼ unidad)"],"h2","ac"]],["Leche con fruta",["le","fe"]],
+["Pollo con fríjoles y arroz integral",["po","fj","ar","zp","pl"]],["Yogurt con chía y fruta",["yd","chia","fe"]],["Galletas con cuajada",["g3","c1"]]]],
+["Viernes",[MA,["Huevos con pan y cuajada",["pan","h2","ac","c1"]],["Parfait de yogurt griego, avena y durazno",["yg","av","du","chia","mi"]],
+["Pollo con lentejas y papa",["po","le2",["🥔","Papa cocida","1 porción"],"zp","pl"]],["Banano con avena",["ba","av"]],["Galletas con huevo",["g3","h1"]]]],
+["Sábado",[AR,["Pancakes de avena",["av","h1","ba","chia","mi","le"]],["Parfait de yogurt griego, avena y arándanos",["yg","av",["🫐","Arándanos frescos","81 g (1 pocillo)"],"chia","mi"]],
+["Trucha a la plancha con garbanzos",[["🐟","Trucha","81 g (½ mediana)"],["🫘","Garbanzos con guiso","100 g (1 cucharón colmado)"],"ar",["🥒","Pepino cohombro","118 g (½ mediano)"],"ao"],NP],
+["Avena cocida con durazno",["av",["🥛","Leche descremada o agua","200 g (1 vaso pequeño)"],"du"]],["Galletas con cuajada",["g3",["🧀","Cuajada","40–60 g (2 tajadas pequeñas)"]]]]],
+["Domingo",[AC,["Galletas con huevo y cuajada",["g3","h1","c1",["🧈","Mantequilla sin sal","5 g (1 cdita rasa)"]]],["Parfait de yogurt, avena y papaya",["yd","av","pa","chia","mi"]],
+["Pollo con legumbres y ensalada de brócoli",["po",["🫘","Lentejas cocidas","130 g (1 cucharón colmado)"],["🥦","Brócoli","89 g (1 pocillo)"],"zn","ao"]],["Yogurt con fresas",["yd","fr"]],["Pan con huevo y aguacate",["pan","h1","agu","ac"]]]]];
+let cur=(new Date().getDay()+6)%7,done={};
+try{done=JSON.parse(localStorage.getItem("rs")||"{}")}catch(e){}
+const nm=x=>(typeof x=="string"?I[x]:x)[1];
+const parfait=it=>[`Lava la fruta (${nm(it[2]).toLowerCase()}) y pícala en cubos pequeños de 1 cm.`,"En un vaso transparente, pon la mitad del yogurt.","Agrega la mitad de la avena y de la fruta; luego espolvorea la chía.","Repite una segunda capa: yogurt, avena y fruta.","Termina con la miel en hilo y deja reposar 5 minutos para que la avena y la chía se ablanden."];
+const huevo=it=>{const oil=it.includes("ac"),r=it.map(nm).filter(n=>!/Huevo|Aceite/.test(n));return[oil?"Calienta 1 cucharada de aceite en una sartén antiadherente a fuego medio-bajo durante 30 segundos.":"Pon agua a hervir en una olla pequeña.",oil?"Casca el huevo en la sartén. Cocina 3 minutos, voltea y deja 1 minuto más; o revuélvelo 2–3 minutos hasta que cuaje.":"Baja el huevo con una cuchara y cocínalo 9 minutos. Pásalo a agua fría 2 minutos y pélalo.","Sirve el huevo acompañado de: "+r.join(", ").toLowerCase()+".","Mide cada porción con la medida casera indicada y come despacio."]};
+const TO=["Tuesta la tajada de pan integral 2 minutos hasta que quede firme y dorada.","Aplasta el aguacate con un tenedor y unas gotas de limón.","Calienta 1 cucharada de aceite en sartén antiadherente a fuego medio-bajo.","Casca el huevo (o los huevos): 3 minutos por un lado, voltea y 1 minuto más; o revuelve 2–3 minutos.","Unta el aguacate sobre el pan y coloca el huevo encima."];
+const PL=["Pasa la pechuga a la plancha con unas gotas de aceite, sazonada con ajo, pimienta y limón: 5–6 minutos por cada lado, hasta que no quede rosada por dentro.","Corta zanahoria y pepino en cubos y aliña con aceite de oliva y limón.","Dora el plátano maduro en tajadas en sartén antiadherente, 3 minutos por lado."];
+const AZ="Lava el arroz integral y cocínalo con el doble de agua, tapado y a fuego bajo, 35–40 minutos; déjalo reposar 5 minutos.";
+const P={
+"Agua con chía y limón":["Llena un vaso con 250 ml de agua.","Exprime ½ limón y retira las semillas.","Agrega ½ cucharada de chía y revuelve.","Deja reposar 10 minutos hasta que la chía forme gel; revuelve de nuevo y toma."],
+"Tostada con huevos y aguacate":TO,"Pan con huevo y aguacate":TO,
+"Salmón asado con ensalada y sopa":["Hierve la papa criolla lavada y con cáscara, 15–18 minutos, hasta que un cuchillo entre fácil.","Sopa: hierve 250 ml de caldo con zanahoria, auyama y cebolla picadas, 15 minutos.","Precalienta el horno a 200 °C. Sazona el salmón con limón, ajo y pimienta; ásalo 12–15 minutos con unas gotas de aceite.","Ralla la zanahoria, corta la remolacha cocida en cuadros y aliña con aceite de oliva y limón.","Sirve el salmón con la ensalada, la papa y la sopa."],
+"Pollo con fríjoles y arroz integral":[AZ,"Calienta los fríjoles cocidos con su guiso 5 minutos a fuego bajo.",...PL,"Sirve todo en un plato y mide cada porción."],
+"Pollo con lentejas y papa":["Lentejas: remójalas 4 horas, cocínalas 30–35 minutos y sofríe cebolla y tomate 5 minutos para el guiso.","Hierve la papa en trozos 20 minutos, hasta que esté blanda.",...PL,"Sirve las lentejas, la papa, el pollo y la ensalada."],
+"Carne magra con lentejas y arroz":[AZ,"Calienta las lentejas con su guiso (cebolla y tomate) 5 minutos.","Sazona la carne con ajo y pimienta; cocínala a la plancha 4–5 minutos por lado.","Pica lechuga, tomate y cebolla; aliña con aceite de oliva y limón.","Sirve todo. El yogurt griego va en un vasito aparte, como acompañante."],
+"Trucha a la plancha con garbanzos":["Sazona la trucha con limón, ajo y pimienta.","Cocínala en plancha caliente, primero por el lado de la piel, 4 minutos por lado.","Sofríe cebolla y tomate 5 minutos, agrega los garbanzos cocidos y cocina 5 minutos más.","Cocina el arroz integral (doble de agua, 35–40 minutos a fuego bajo).","Corta el pepino en rodajas y aliña con aceite de oliva y limón. Sirve todo."],
+"Pollo con legumbres y ensalada de brócoli":["Pasa la pechuga a la plancha 5–6 minutos por lado, sazonada con ajo, pimienta y limón.","Calienta las lentejas cocidas con su guiso 5 minutos.","Cocina los ramitos de brócoli al vapor 3–4 minutos, hasta que estén verde brillante.","Ralla la zanahoria, mézclala con el brócoli y aliña con aceite de oliva y limón.","Sirve el pollo, las lentejas y la ensalada."],
+"Pancakes de avena":["Machaca el banano con un tenedor hasta formar un puré.","Mezcla con el huevo, la avena, la chía y 2 cucharadas de la leche; deja reposar 5 minutos.","Calienta una sartén antiadherente a fuego medio.","Vierte porciones de 3 cucharadas; cocina 2–3 minutos hasta ver burbujas, voltea y cocina 1–2 minutos más.","Sirve con la miel y acompaña con el resto de la leche."],
+"Avena cocida con durazno":["Pon la avena y la leche (o agua) en una olla pequeña.","Cocina a fuego bajo 5 minutos, revolviendo, hasta que espese.","Corta el durazno en cubos y agrégalo.","Deja reposar 2 minutos y come tibia."],
+"Matcha latte con vainilla":["Calienta la leche hasta que humee, sin hervir (unos 90 segundos).","En una taza, disuelve 1 cucharadita de matcha con 2 cucharadas de agua caliente, sin grumos.","Agrega la leche y unas gotas de vainilla; bate o revuelve y toma."],
+"Aromática":["Calienta 200 ml de agua hasta que hierva.","Viértela sobre la infusión y tapa 5 minutos.","Retira la infusión y toma tibia, sin azúcar."],
+"Leche con fruta":["Sirve 1 vaso pequeño de leche descremada, fría o tibia (90 segundos en microondas).","Lava la fruta y córtala en cubos de 2 cm.","Sirve la fruta en un plato y acompáñala con la leche."],
+"Yogurt con fruta":["Sirve el yogurt en un bowl.","Lava la fruta y córtala en cubos.","Agrégala encima y mezcla."],
+"Yogurt con chía y fruta":["Sirve el yogurt en un bowl.","Lava la fruta y córtala en cubos.","Agrega la fruta y la chía; mezcla y deja reposar 3 minutos."],
+"Yogurt griego con fresas":["Lava las fresas, quita las hojas y pártelas en mitades.","Sirve el yogurt griego en un bowl.","Agrega las fresas y termina con la miel en hilo."],
+"Yogurt con fresas":["Lava las fresas, quita las hojas y pártelas en mitades.","Sirve el yogurt en un bowl y agrega las fresas encima."],
+"Papaya con nueces":["Retira cáscara y semillas de la papaya y córtala en cubos.","Pica la mezcla de nueces en trozos pequeños.","Sirve la papaya con las nueces por encima."],
+"Banano con avena":["Pela el banano y córtalo en rodajas.","Mezcla en un bowl con la avena; puedes dejarla remojar 5 minutos con 3 cucharadas de agua tibia.","Come enseguida."]};
+const CU=["Corta la cuajada en tajadas de la porción indicada.","Mide las galletas (o el pan) con la medida casera indicada.","Sirve todo en un plato y come despacio."];
+function steps(m){const t=m[0];if(P[t])return P[t];if(t.startsWith("Parfait"))return parfait(m[1]);if(/huevo/i.test(t))return huevo(m[1]);return CU}
+function plate(it){const e=[...new Set(it.map(x=>(typeof x=="string"?I[x]:x)[0]))].slice(0,6),n=e.length,r=n<3?20:38;
+return`<svg viewBox="0 0 140 140"><circle cx="70" cy="70" r="66" fill="var(--card)" stroke="var(--line)" stroke-width="4"/><circle cx="70" cy="70" r="52" fill="var(--chip)" stroke="var(--line)"/>`+e.map((c,i)=>{const a=i/n*6.283-1.57,x=n==1?70:70+r*Math.cos(a),y=n==1?70:70+r*Math.sin(a);return`<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" font-size="${n>4?24:28}" text-anchor="middle" dominant-baseline="central">${c}</text>`}).join("")+`</svg>`}
+const prep=m=>`<div class=pr><h3>Preparación paso a paso</h3><ol>${steps(m).map(x=>`<li><span>${x}</span></li>`).join("")}</ol><div class=pl>${plate(m[1])}<p>Así se arma tu plato (ilustración)</p></div></div>`;
+let op={};
+const li=x=>{const a=typeof x=="string"?I[x]:x;return`<li><span class=e>${a[0]}</span><span class=n>${a[1]}</span><b>${a[2]}</b></li>`};
+function render(){
+const t=document.getElementById("t");
+t.innerHTML=D.map((d,i)=>`<button class="${i==cur?"on":""}" data-d="${i}">${d[0].slice(0,3)}<small>${d[0]}</small></button>`).join("");
+const ms=D[cur][1];let n=0;
+document.getElementById("m").innerHTML=ms.map((m,i)=>{const k=cur+"-"+i,o=done[k];if(o)n++;const s=S[i];
+return`<section class="meal${o?" ok":""}" style="--c:${s[2]}"><div class=top><div class=ic>${s[1]}</div><div><span>${s[0]}</span><h2>${m[0]}</h2></div><button class=chk data-k="${k}" aria-label="Marcar como hecha">${o?"✓":""}</button></div><ul>${m[1].map(li).join("")}</ul>${m[2]?`<p class=note>💡 ${m[2]}</p>`:""}<button class=ver data-o="${k}">${op[k]?"Ocultar preparación":"📖 Ver preparación"}</button>${op[k]?prep(m):""}</section>`}).join("");
+document.getElementById("pt").textContent=n+" de 6 comidas hoy";
+document.getElementById("pb").style.width=(n/6*100)+"%";
+const b=t.querySelector(".on");if(b)t.scrollLeft=b.offsetLeft-20;
+}
+document.addEventListener("click",e=>{
+const d=e.target.closest("[data-d]"),k=e.target.closest("[data-k]");
+const o=e.target.closest("[data-o]");if(o){op[o.dataset.o]=!op[o.dataset.o];render()}
+if(d){cur=+d.dataset.d;render()}
+if(k){const q=k.dataset.k;done[q]=!done[q];try{localStorage.setItem("rs",JSON.stringify(done))}catch(x){}render()}});
+render();
+</script></body></html>
